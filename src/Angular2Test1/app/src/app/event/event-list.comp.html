@@ -1,0 +1,12 @@
+﻿<div class="container">
+    <h1>Heroe List</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-5" *ngFor="let item of eventData" >
+            <event-thumbnail #thumbData
+                             (eventClick)="handleEventClicked($event)"
+                             [event]="item">
+            </event-thumbnail>
+        </div>
+    </div>
+</div>
