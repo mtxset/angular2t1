@@ -14,8 +14,8 @@ export class EventListComp implements OnInit {
 
     constructor(
         private _eventService: EventService,  
-        private _route: ActivatedRoute) {
-        
+        private _route: ActivatedRoute) 
+    {
     }
 
     handleEventClicked(data) {

@@ -13,8 +13,22 @@ EventDetailComp,
 CreateEventComp,
 EventRouteActivator,
 EventListResolver,
-CreateSessionComp
+CreateSessionComp,
+SessionListComp,
+DurationPipe
 } from "./event/index";
+
+import { 
+    ToastrService, 
+    IToastr, 
+    JQueryService,
+    CollapsibleWellComp,
+    SimpleModalComp,
+    ModalTriggerDirective
+ } from "./common/index";
+    
+declare let toastr : IToastr;
+declare let jQuery : Object;
 
 import { NavBarComp } from "./nav/navbar.comp";
 import { Error404Comp } from "./errors/404.component";
@@ -31,7 +45,12 @@ import { AuthService } from "./user/auth.service";
       EventDetailComp,
       CreateEventComp,
       CreateSessionComp,
-      Error404Comp
+      SessionListComp,
+      Error404Comp,
+      CollapsibleWellComp,
+      DurationPipe,
+      SimpleModalComp,
+      ModalTriggerDirective
     ],
 
   imports: [
@@ -42,15 +61,19 @@ import { AuthService } from "./user/auth.service";
     RouterModule.forRoot(appRoutes)
   ],
 
-  providers: [
+  providers: 
+  [
       EventService,
       EventRouteActivator,
-      { 
+      {  
           provide: "canDeactivateCreateEvent",
           useValue: checkDirtyState
       },
       EventListResolver,
-      AuthService],
+      { provide: AuthService, useClass: AuthService },
+      { provide: ToastrService, useValue: toastr},
+      { provide: JQueryService, useValue: jQuery}
+  ],
 
   bootstrap: [AppComponent]
 })

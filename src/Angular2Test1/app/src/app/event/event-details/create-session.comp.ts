@@ -1,17 +1,24 @@
-import { Component} from "@angular/core";
+import { Component, Output, EventEmitter, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { SessionModel } from "../shared/event.model";
+import { SessionModel, ResitrectedWords } from "../shared/index";
 
 @Component({
+    selector: "create-session",
     templateUrl: "./create-session.comp.html",
-    styles:["em {float: right; color: #e05c65; padding-left: 10px",
+    styles:
+    [
+        "em {float: right; color: #e05c65; padding-left: 10px",
         ".error input, .error select, .error textarea {background-color: #e3c3c5;}",
         ".error ::-webkit-input-placeholder {color : #999;}",
         ".error ::-moz-placeholder {color : #999;}",
-        ".error :moz-placeholder {color : #999;}"]
+        ".error :moz-placeholder {color : #999;}"
+    ]
 })
 
-export class CreateSessionComp{
+export class CreateSessionComp implements OnInit { 
+    
+    @Output() saveNewSession = new EventEmitter();
+    @Output() cancelAddSession = new EventEmitter();
 
     name: FormControl;
     presenter: FormControl;
@@ -27,7 +34,11 @@ export class CreateSessionComp{
         this.presenter = new FormControl("", Validators.required);
         this.duration = new FormControl("", Validators.required);
         this.level = new FormControl("", Validators.required);
-        this.abstract = new FormControl("", Validators.required);
+        this.abstract = new FormControl("", 
+        [
+            Validators.required,
+            ResitrectedWords(["fudge", "fag"])
+            ]);
 
         this.newSessionForm = new FormGroup({
             name: this.name,
@@ -47,10 +58,15 @@ export class CreateSessionComp{
             presenter: formValues.presenter,
             level: formValues.level,
             abstract: formValues.abstract,
-            voters: undefined
+            voters: []
         }
 
-        console.log(session);
+        this.saveNewSession.emit(session);
+    }
+
+    cancel()
+    {
+        this.cancelAddSession.emit();
     }
 
 }
