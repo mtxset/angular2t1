@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Angular2Test1.Models;
 
 namespace Angular2Test1
 {
@@ -14,12 +15,15 @@ namespace Angular2Test1
     {
         public Startup(IHostingEnvironment env)
         {
+
+                
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -28,6 +32,7 @@ namespace Angular2Test1
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            //services.AddSingleton<List<Event>, List<Event>>();
             services.AddCors();
             services.AddMvc();
         }
@@ -40,7 +45,10 @@ namespace Angular2Test1
 
             // Should be used only in dev environment
             app.UseCors(
-                opts=> opts.WithOrigins("http://localhost").AllowAnyOrigin().AllowAnyHeader()
+                opts=> opts.WithOrigins("http://localhost")
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
                 );
 
             app.UseStaticFiles();

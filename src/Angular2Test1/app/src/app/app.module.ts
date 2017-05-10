@@ -11,11 +11,14 @@ EventListComp,
 EventThumbComp,
 EventDetailComp,
 CreateEventComp,
-EventRouteActivator,
+EventResolver,
 EventListResolver,
 CreateSessionComp,
 SessionListComp,
-DurationPipe
+DurationPipe,
+UpvoteComp,
+VotersService,
+LocationValidator,
 } from "./event/index";
 
 import { 
@@ -27,7 +30,7 @@ import {
     ModalTriggerDirective
  } from "./common/index";
     
-declare let toastr : IToastr;
+declare let toastr : Object;
 declare let jQuery : Object;
 
 import { NavBarComp } from "./nav/navbar.comp";
@@ -50,7 +53,9 @@ import { AuthService } from "./user/auth.service";
       CollapsibleWellComp,
       DurationPipe,
       SimpleModalComp,
-      ModalTriggerDirective
+      ModalTriggerDirective,
+      UpvoteComp,
+      LocationValidator
     ],
 
   imports: [
@@ -64,7 +69,8 @@ import { AuthService } from "./user/auth.service";
   providers: 
   [
       EventService,
-      EventRouteActivator,
+      VotersService,
+      EventResolver,
       {  
           provide: "canDeactivateCreateEvent",
           useValue: checkDirtyState

@@ -18,7 +18,8 @@ export class ProfileComp implements OnInit {
     constructor (
         private _authService: AuthService, 
         private _router: Router,
-        @Inject(ToastrService) private _toastr: IToastr) {}
+        @Inject(ToastrService) private _toastr) {}
+        // to enable intellisense: private _toastr:IToastr but shows warnings
 
     profileForm: FormGroup;
     private firstNameFC: FormControl;
@@ -46,6 +47,13 @@ export class ProfileComp implements OnInit {
     cancel()
     {
         this._router.navigate(['events']);
+    }
+
+    logout()
+    {
+        this._authService.logout().subscribe(() => {
+            this._router.navigate(["/user/login"])
+        });
     }
 
     saveProfile(profileForm)

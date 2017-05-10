@@ -1,6 +1,6 @@
 ﻿import { Component } from "@angular/core";
 import { EventService } from "../shared/event.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Params } from "@angular/router";
 import { SessionModel, EventModel } from "../shared/index";
 
 @Component({
@@ -9,7 +9,7 @@ import { SessionModel, EventModel } from "../shared/index";
     "a {cursor:pointer}"]
 })
 
-export class EventDetailComp {
+export class EventDetailComp{
     event: EventModel;
     addMode: boolean;
     filterBy: string = "all";
@@ -20,8 +20,7 @@ export class EventDetailComp {
 
     ngOnInit()
     {
-        this.event = this._eventService.getEvent(
-        +this._route.snapshot.params['id']);
+        this.resetCompState();
     }
 
     addSession()
@@ -35,7 +34,7 @@ export class EventDetailComp {
 
         session.id = newId; 
         this.event.sessions.push(session);
-        this._eventService.updateEvent(this.event);
+        this._eventService.updateEvent(this.event).subscribe();
 
         this.addMode = false;
     }
@@ -43,5 +42,14 @@ export class EventDetailComp {
     cancelAddSession()
     {
         this.addMode = false;
+    }
+
+    resetCompState()
+    {
+        this._route.data.forEach((data) =>
+        {
+            this.event = data['event'];
+            this.addMode = false;
+        });
     }
 }

@@ -1,5 +1,5 @@
 ﻿import { Injectable, OnInit, EventEmitter } from "@angular/core";
-import { Http, Response, Headers } from "@angular/http";
+import { Http, Response, Headers, Request, RequestOptions } from "@angular/http";
 import { Subject, Observable } from 'rxjs/Rx';
 import { EventModel, SessionModel } from "./event.model";
 
@@ -8,69 +8,87 @@ export class EventService implements OnInit {
 
     private testTimeout: number = 100;
     private baseSwapioUrl = "http://swapi.co/api/";
+    private baseUrl = "http://localhost:54110/api/";
     private tempVar: string = "null";
-    private handleError: any;
 
     _headers = new Headers();
 
     constructor(private _http: Http)
     {
-        this.getValues().subscribe(data => this.tempVar = data);
     } 
 
     getValues() {
-        let sm = this._http.get(this.baseSwapioUrl+"planets/1").map((res: Response) => res.json());
+        let sm = this._http.get(this.baseSwapioUrl+"planets/1")
+            .map((res: Response) => res.json());
         return sm;
     }
 
-    getEvents(): Observable<EventModel[]> {
+    getEventsOLD(): Observable<EventModel[]>
+    {
         let subject = new Subject<EventModel[]>();
-        setTimeout(() => { subject.next(EVENTS); subject.complete(); }, this.testTimeout);
+
+        setTimeout(() =>
+        {
+            subject.next(EVENTS); 
+            subject.complete();
+        }, 100);
+        
         return subject;
     }
 
-    getEvent(id: number):EventModel {
+    getEvents(): Observable<EventModel[]> {
+        return this._http.get(this.baseUrl + "events")
+            .map((res:Response) => 
+            { 
+                return <EventModel[]>res.json(); 
+            })
+            .catch(this.handleError);
+    }
+
+    private handleError(error:Response)
+    {
+        return Observable.throw(error.statusText);
+    }
+
+    getEventOLD(id: number):EventModel {
         return EVENTS.find(x => x.id === id);
     }
 
-    updateEvent(event)
-    {
-        let index = EVENTS.findIndex(x => x.id == event.id);
-
-        EVENTS[index] = event;
+    getEvent(id: number):Observable<EventModel> {
+        return this._http.get(this.baseUrl + "events/"+ id)
+            .map((res:Response) => 
+            { 
+                return <EventModel>res.json(); 
+            })
+            .catch(this.handleError);
     }
 
-    saveEvent(event){
-        event.id = 999;
-        event.session = [];
-        EVENTS.push(event);
+    saveEvent(event): Observable<EventModel> {
+        let headers = new Headers({ "Content-Type" : "application/json"});
+        let option = new RequestOptions({headers: headers});
+
+        return this._http.post(this.baseUrl+ "events", JSON.stringify(event), option)
+            .map((res: Response) => { return res.json();})
+            .catch(this.handleError);
+    }
+
+    updateEvent(event): Observable<EventModel> {
+        let headers = new Headers({ "Content-Type" : "application/json"});
+        let option = new RequestOptions({headers: headers});
+
+        return this._http.put(this.baseUrl+"events/"+event.id, JSON.stringify(event), option)
+            .map((res: Response) => { return res.json();})
+            .catch(this.handleError);
     }
 
     searchSessions(searchString: string)
     {
-        var results: SessionModel[] = [];
-
-        EVENTS.forEach(event => 
-        {
-            var matchingSession = event.sessions.filter( 
-                session => session.name.toLocaleLowerCase()
-                    .indexOf(searchString.toLocaleLowerCase()) > -1);
-
-            matchingSession = matchingSession.map((session: any) =>{
-                session.eventId = event.id;
-                return session;
-            });
-
-            results = results.concat(matchingSession);
-        });
-
-        var emitter = new EventEmitter(true);
-
-        setTimeout(()=>{
-            emitter.emit(results);
-        }, 100);
-
-        return emitter;
+        return this._http.get(this.baseUrl + "session?search="+searchString)
+            .map((res:Response) => 
+            { 
+                return res.json(); 
+            })
+            .catch(this.handleError);
     } 
 
     ngOnInit()
@@ -120,7 +138,7 @@ const EVENTS:EventModel[] = [
                 duration: 1,
                 level: "Ez",
                 abstract: "Thether bomb",
-                voters: undefined
+                voters: []
             }
         ]
     },

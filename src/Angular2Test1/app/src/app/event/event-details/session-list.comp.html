@@ -1,10 +1,20 @@
 <div class="row" *ngFor="let session of filtredSession">
+  
+  <div *ngIf="_authService.isAuthenticated()" class="col-md-1">
+    <upvote (vote)="toggleVote(session)" 
+      [count]="session?.voters?.length"
+      [voted]="userHasVoted(session)">
+    </upvote>
+  </div>
+  
   <div class="col-md-10">
     <collapsible-well>
 
     <div well-title>
         {{session.name}}
-        <i *ngIf="session?.voters?.length > 3">HOT</i>
+        <i *ngIf="session?.voters?.length > 3">
+          <i class="glyphicon glyphicon-sunglasses" style="color:red"></i>
+        </i>
     </div>
 
     <div well-body>

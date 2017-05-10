@@ -40,7 +40,7 @@
                         </a>
                         <a *ngIf="_authService.isAuthenticated()" 
                         [routerLink]="['user/profile']">
-                        Welcome {{_authService.currentUser.FirstName}} 
+                        Welcome {{_authService.currentUser}} 
                         </a>
                     </li>
                 </ul>
@@ -64,7 +64,7 @@
     </div>
 </div>
 
-<simple-modal elementId="searchResults" title="Found Session">
+<simple-modal closeOnBodyClick="true" elementId="searchResults" title="Found Session">
     <div class="list-group">
         <a class="list-group-item" *ngFor="let session of foundSessions"
         [routerLink] = "['/events', session.eventId]">{{session.name}}

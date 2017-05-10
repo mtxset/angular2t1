@@ -20,7 +20,7 @@ export class EventListComp implements OnInit {
 
     handleEventClicked(data) {
         this._eventService.getValues().subscribe(data => this.tempValue = data);
-
+        
         console.log(this.tempValue);
     }
 

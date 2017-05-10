@@ -6,7 +6,7 @@ import { EventModel } from "./shared/event.model";
     templateUrl: "./event-thumb.comp.html",
     styles: [
         ".pad-left {margin-left: 10px};",
-        "thumbnail {min-height:200px;}",
+        ".thumbnail {min-height:200px;}",
         ".green {color: #008800 !important;} ]",
         ".bold {font-weight: bold;}"]
 })
