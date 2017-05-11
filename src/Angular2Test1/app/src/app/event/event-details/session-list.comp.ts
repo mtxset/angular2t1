@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from "@angular/core";
+import { Component, Input, OnChanges, SimpleChanges } from "@angular/core";
 import { SessionModel } from "../shared/index";
 import { AuthService } from "../../user/auth.service";
 import { VotersService } from "./voters.service";
@@ -16,13 +16,13 @@ export class SessionListComp implements OnChanges {
     filtredSession: SessionModel[] = [];
 
     constructor(
-        private _authService: AuthService,
-        private _votersService: VotersService)
+        public _authService: AuthService,
+        public _votersService: VotersService)
     {
 
     }
 
-    ngOnChanges()
+    ngOnChanges(changes: SimpleChanges)
     {
         if (!this.sessions) return;
 

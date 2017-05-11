@@ -9,6 +9,9 @@ import { Router} from "@angular/router";
 
 export class LoginComp{
     loginInvalid = false;
+    public mouseoverLogin = false;
+    public userName: string;
+    public password: string;
 
     constructor (
         private _authService: AuthService,

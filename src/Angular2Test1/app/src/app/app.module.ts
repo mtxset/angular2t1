@@ -1,10 +1,11 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import "./rxjs-extensions";
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
 
-import {  AppComponent } from './app.component';
+import { AppComponent } from "./app.component";
 
 import {
 EventListComp,
@@ -21,23 +22,26 @@ VotersService,
 LocationValidator,
 } from "./event/index";
 
-import { 
-    ToastrService, 
-    IToastr, 
+import {
+    ToastrService,
+    IToastr,
     JQueryService,
     CollapsibleWellComp,
     SimpleModalComp,
     ModalTriggerDirective
  } from "./common/index";
-    
-declare let toastr : Object;
-declare let jQuery : Object;
+
+
+let toastr: IToastr =  window["toastr"];
+let jQuery: Object = window["$"];
 
 import { NavBarComp } from "./nav/navbar.comp";
 import { Error404Comp } from "./errors/404.component";
 import { EventService } from "./event/shared/event.service";
 import { appRoutes } from "./routes";
 import { AuthService } from "./user/auth.service";
+
+import { checkDirtyState } from "./check-dirty-state.func";
 
 @NgModule({
   declarations: [
@@ -66,12 +70,12 @@ import { AuthService } from "./user/auth.service";
     RouterModule.forRoot(appRoutes)
   ],
 
-  providers: 
+  providers:
   [
       EventService,
       VotersService,
       EventResolver,
-      {  
+      {
           provide: "canDeactivateCreateEvent",
           useValue: checkDirtyState
       },
@@ -83,12 +87,8 @@ import { AuthService } from "./user/auth.service";
 
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
 
-function checkDirtyState(component: CreateEventComp)
-{
-    if (component.isDirty)
-        return window.confirm("You have not saved.");
 
-    return true;
-}
+

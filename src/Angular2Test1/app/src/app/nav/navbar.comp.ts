@@ -14,8 +14,8 @@ export class NavBarComp {
     foundSessions: SessionModel[];
 
     constructor (
-        private _authService: AuthService,
-        private _eventService: EventService)
+        public _authService: AuthService,
+        public _eventService: EventService)
     {
 
     }

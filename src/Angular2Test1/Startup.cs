@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Angular2Test1.Models;
+using System.IO;
 
 namespace Angular2Test1
 {
@@ -43,7 +44,22 @@ namespace Angular2Test1
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            DefaultFilesOptions options = new DefaultFilesOptions();
+            options.DefaultFileNames.Clear();
+            options.DefaultFileNames.Add("index.html");
+
             // Should be used only in dev environment
+            app.Use(async (context, next) =>
+            {
+                await next();
+
+                if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
+                {
+                    context.Request.Path = "/index.html";
+                    await next();
+                }
+            }).UseDefaultFiles(options);
+
             app.UseCors(
                 opts=> opts.WithOrigins("http://localhost")
                     .AllowAnyOrigin()
@@ -52,7 +68,10 @@ namespace Angular2Test1
                 );
 
             app.UseStaticFiles();
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(name: "default", template: "{controller=EventsApi}");
+            });
         }
     }
 }

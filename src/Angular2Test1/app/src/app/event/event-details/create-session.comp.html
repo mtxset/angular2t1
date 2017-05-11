@@ -45,9 +45,9 @@
     <div class="form-group">
       <label for="abstract">Abstract:</label>
       <em *ngIf="abstract.invalid && abstract.dirty &&
-      abstract?.errors.required">Required</em>
+      abstract?.hasError('required')">Required</em>
       <em *ngIf="abstract.invalid && abstract.dirty && 
-      abstract?.errors.restrictedWords">
+      abstract?.hasError('restrictedWords')">
         Word are not allowed: {{abstract.errors.restrictedWords}} 
       </em>
       <textarea formControlName="abstract" 

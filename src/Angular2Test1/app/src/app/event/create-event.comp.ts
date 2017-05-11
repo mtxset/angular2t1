@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import { EventService } from "./shared/event.service";
 
 @Component({
-    templateUrl:"./create-event.comp.html",
+    templateUrl: "./create-event.comp.html",
     styles:["em {float: right; color: #e05c65; padding-left: 10px",
         ".error input {background-color: #e3c3c5;}",
         ".error ::-webkit-input-placeholder {color : #999;}",
@@ -13,7 +13,7 @@ import { EventService } from "./shared/event.service";
 
 export class CreateEventComp {
     event: any;
-    isDirty: boolean = true;
+    isDirty = true;
 
     constructor (private router:  Router,
     private _eventService: EventService) {}

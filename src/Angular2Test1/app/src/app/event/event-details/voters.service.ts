@@ -1,6 +1,7 @@
 import { Injectable, OnInit, EventEmitter } from "@angular/core";
 import { Http, Response, Headers, Request, RequestOptions } from "@angular/http";
-import { Subject, Observable } from 'rxjs/Rx';
+import { Observable } from "rxjs/Observable";
+import { Subject } from "rxjs/Subject";
 import { EventModel, SessionModel } from "../shared/event.model";
 
 @Injectable()
@@ -29,11 +30,11 @@ export class VotersService{
 
         let headers = new Headers({ "Content-Type" : "application/json"});
         let option = new RequestOptions({headers: headers});
+
         let url = this.baseUrl + 
             `events/${eventId}/sessions/${session.id}/voters/${voterName}`;
 
         this._http.post(url, JSON.stringify({}), option)
-            .map((res: Response) => { return res.json();})
             .catch(this.handleError)
             .subscribe();
     }

@@ -1,6 +1,6 @@
-import { VotersService } from "./voters.service"
-import { SessionModel } from "../shared/event.model"
-import { Observable } from "rxjs/Rx"
+import { VotersService } from "./voters.service";
+import { SessionModel } from "../shared/event.model";
+import { Observable } from "rxjs/Observable";
 
 describe("VoterService", () => {
 
@@ -12,7 +12,7 @@ describe("VoterService", () => {
         voterService = new VotersService(mockHttp);
     })
 
-    describe("deleteVoter", ()=> 
+    describe("deleteVoter", () => 
     {
         it("should remove the voter from the list of voters", () =>
         {
@@ -34,8 +34,8 @@ describe("VoterService", () => {
 
              expect(mockHttp.delete)
                 .toHaveBeenCalledWith(baseUrl+"events/3/sessions/6/voters/joe");
-        });
-    });
+        })
+    })
 
     describe("addVote", ()=>
     {
@@ -49,7 +49,7 @@ describe("VoterService", () => {
              expect(mockHttp.post)
                 .toHaveBeenCalledWith(
                     baseUrl+"events/3/sessions/6/voters/joe", "{}", jasmine.any(Object));
-        });
-    });
+        })
+    })
     
 }) 

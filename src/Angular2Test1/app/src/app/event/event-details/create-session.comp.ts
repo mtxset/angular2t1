@@ -34,7 +34,7 @@ export class CreateSessionComp implements OnInit {
         this.presenter = new FormControl("", Validators.required);
         this.duration = new FormControl("", Validators.required);
         this.level = new FormControl("", Validators.required);
-        this.abstract = new FormControl("", 
+        this.abstract = new FormControl("",
         [
             Validators.required,
             ResitrectedWords(["fudge", "fag"])
@@ -46,7 +46,7 @@ export class CreateSessionComp implements OnInit {
             duration: this.duration,
             level: this.level,
             abstract: this.abstract
-        })
+        });
     }
 
     saveSession(formValues)

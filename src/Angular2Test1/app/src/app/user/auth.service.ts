@@ -2,7 +2,8 @@ import {Injectable} from "@angular/core";
 import { UserModel} from "./user.model";
 import { Router } from "@angular/router";
 import { Http, Response, Headers, Request, RequestOptions } from "@angular/http";
-import { Subject, Observable } from 'rxjs/Rx';
+import { Observable } from "rxjs/Observable";
+import { Subject } from "rxjs/Subject";
 
 @Injectable()
 
@@ -45,11 +46,10 @@ export class AuthService {
                 if (res._body)
                     return res.json();
                 else
-                    return {}
+                    return {};
             }).do(user => {
                 if (!!user.username){
                     this.currentUser = user.username;
-                    console.log(user)
                 }
             })
             .subscribe();
